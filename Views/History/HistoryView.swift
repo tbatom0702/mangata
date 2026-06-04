@@ -4,10 +4,10 @@ import SwiftData
 struct HistoryView: View {
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Walk.startTime, order: .reverse) private var walks: [Walk]
-    @State private var selectedWalk: Walk?
+    @State private var navigationPath = NavigationPath()
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ZStack {
                 Color.mangataBackground
                     .ignoresSafeArea()
@@ -38,7 +38,7 @@ struct HistoryView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(item: $selectedWalk) { walk in
+            .navigationDestination(for: Walk.self) { walk in
                 WalkDetailView(walk: walk)
             }
         }
@@ -65,7 +65,7 @@ struct HistoryView: View {
             LazyVStack(spacing: 12) {
                 ForEach(walks) { walk in
                     WalkHistoryCard(walk: walk) {
-                        selectedWalk = walk
+                        navigationPath.append(walk)
                     }
                 }
             }

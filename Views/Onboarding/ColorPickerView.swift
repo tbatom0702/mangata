@@ -138,7 +138,7 @@ struct ColorPickerView: View {
                 floatOffset = -8
             }
         }
-        .onChange(of: currentIndex) { _, newIndex in
+        .onChange(of: currentIndex) { newIndex in
             viewModel.selectedIndex = newIndex
             viewModel.selectedTheme = viewModel.allThemes[newIndex]
         }
