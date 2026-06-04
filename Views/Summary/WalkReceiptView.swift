@@ -159,23 +159,6 @@ struct WalkReceiptView: View {
         }
         .frame(maxWidth: .infinity)
     }
-
-    private var receiptNumber: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyyMMdd"
-        let datePart = formatter.string(from: walk.startTime)
-        let randomPart = String(format: "%04d", walk.startTime.timeIntervalSince1970.truncatingRemainder(dividingBy: 10000))
-        return "\(datePart)\(randomPart)"
-    }
-
-    private var dateString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd"
-        let datePart = formatter.string(from: walk.startTime)
-        formatter.dateFormat = "EEE"
-        let weekdayPart = formatter.string(from: walk.startTime).uppercased()
-        return "\(datePart) · \(weekdayPart)"
-    }
 }
 
 struct ReceiptItem: View {
@@ -211,7 +194,6 @@ struct ReceiptItem: View {
                     .foregroundStyle(Color.mangataText)
             }
         }
-    }
 }
 
 struct DashedLine: View {

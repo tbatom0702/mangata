@@ -2,7 +2,7 @@ import Foundation
 import CoreLocation
 import SwiftUI
 
-struct Walk: Identifiable, Codable, Hashable {
+struct Walk: Identifiable, Codable {
     let id: UUID
     let colorId: String
     let colorName: String
@@ -12,6 +12,14 @@ struct Walk: Identifiable, Codable, Hashable {
     var stepCount: Int
     var photos: [WalkPhoto]
     var routeCoordinates: [CodableCoordinate]
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: Walk, rhs: Walk) -> Bool {
+        lhs.id == rhs.id
+    }
 
     var duration: TimeInterval {
         (endTime ?? Date()) - startTime
