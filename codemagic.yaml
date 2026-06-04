@@ -1,0 +1,38 @@
+workflows:
+  ios-workflow:
+    name: iOS Build
+    max_build_duration: 60
+    environment:
+      xcode: latest
+      node: latest
+    cache:
+      cache_paths:
+        - ~/Library/Developer/Xcode/DerivedData
+    scripts:
+      - name: Install XcodeGen
+        script: |
+          brew install xcodegen
+      - name: Generate Xcode project
+        script: |
+          cd $CM_BUILD_DIR
+          xcodegen generate
+      - name: Build iOS
+        script: |
+          cd $CM_BUILD_DIR
+          xcode-project build \
+            --project Mangata.xcodeproj \
+            --scheme Mangata \
+            --configuration Debug \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_ALLOWED=NO
+    artifacts:
+      - $CM_BUILD_DIR/build/**/*.ipa
+      - $CM_BUILD_DIR/Logs/**/*.xcresult
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com
+        notify:
+          success: true
+          failure: true
