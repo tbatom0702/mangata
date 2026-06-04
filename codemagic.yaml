@@ -19,13 +19,14 @@ workflows:
       - name: Build iOS
         script: |
           cd $CM_BUILD_DIR
-          xcode-project build \
-            --project Mangata.xcodeproj \
-            --scheme Mangata \
-            --configuration Debug \
+          xcodebuild -project Mangata.xcodeproj \
+            -scheme Mangata \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO \
+            build
     artifacts:
       - $CM_BUILD_DIR/build/**/*.ipa
       - $CM_BUILD_DIR/Logs/**/*.xcresult
