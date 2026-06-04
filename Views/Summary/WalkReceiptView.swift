@@ -14,39 +14,27 @@ struct WalkReceiptView: View {
                 VStack(spacing: 0) {
                     headerSection
 
-                    Spacer()
-                        .frame(height: 20)
-
+                    Spacer().frame(height: 20)
                     dashedDivider
-
-                    Spacer()
-                        .frame(height: 20)
-
+                    Spacer().frame(height: 20)
                     receiptItems
-
-                    Spacer()
-                        .frame(height: 20)
+                    Spacer().frame(height: 20)
 
                     if !walk.routeCoordinates.isEmpty {
                         miniMapSection
-                        Spacer()
-                            .frame(height: 20)
+                        Spacer().frame(height: 20)
                     }
 
                     dashedDivider
 
                     if !walk.photos.isEmpty {
-                        Spacer()
-                            .frame(height: 20)
+                        Spacer().frame(height: 20)
                         photoRow
-                        Spacer()
-                            .frame(height: 20)
+                        Spacer().frame(height: 20)
                         dashedDivider
                     }
 
-                    Spacer()
-                            .frame(height: 20)
-
+                    Spacer().frame(height: 20)
                     footerSection
                 }
                 .padding(24)
@@ -55,9 +43,7 @@ struct WalkReceiptView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
+                Button { dismiss() } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "xmark")
                         Text("关闭")
@@ -75,15 +61,11 @@ struct WalkReceiptView: View {
             Text("散步小票")
                 .font(.system(size: 24, weight: .bold, design: .serif))
                 .foregroundStyle(Color.mangataText)
-
             Text("COLOR WALK RECEIPT")
                 .font(.system(size: 10, design: .monospaced))
                 .tracking(3)
                 .foregroundStyle(Color.mangataSubtext)
-
-            Spacer()
-                .frame(height: 8)
-
+            Spacer().frame(height: 8)
             Text("NO.\(receiptNumber)")
                 .font(.system(size: 12, design: .monospaced))
                 .foregroundStyle(Color.mangataSubtext)
@@ -92,8 +74,7 @@ struct WalkReceiptView: View {
     }
 
     private var dashedDivider: some View {
-        DashedLine()
-            .frame(height: 1)
+        DashedLine().frame(height: 1)
     }
 
     private var receiptItems: some View {
@@ -127,9 +108,7 @@ struct WalkReceiptView: View {
             ForEach(walk.photos.prefix(3)) { photo in
                 Group {
                     if let image = photo.image {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFill()
+                        Image(uiImage: image).resizable().scaledToFill()
                     } else {
                         Rectangle().fill(Color.mangataDivider)
                     }
@@ -148,16 +127,31 @@ struct WalkReceiptView: View {
                 Circle().fill(Color(hex: "#FFB6C1")).frame(width: 6, height: 6)
                 Circle().fill(Color(hex: "#8FBC5A")).frame(width: 6, height: 6)
             }
-
             Text("Mangata")
                 .font(.system(size: 14, weight: .semibold, design: .serif))
                 .foregroundStyle(Color.mangataText)
-
             Text("完整记录每一次散步")
                 .font(.system(size: 11))
                 .foregroundStyle(Color.mangataSubtext)
         }
         .frame(maxWidth: .infinity)
+    }
+
+    private var receiptNumber: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        let datePart = formatter.string(from: walk.startTime)
+        let randomPart = String(format: "%04d", Int(walk.startTime.timeIntervalSince1970) % 10000)
+        return "\(datePart)\(randomPart)"
+    }
+
+    private var dateString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd"
+        let datePart = formatter.string(from: walk.startTime)
+        formatter.dateFormat = "EEE"
+        let weekdayPart = formatter.string(from: walk.startTime).uppercased()
+        return "\(datePart) · \(weekdayPart)"
     }
 }
 
@@ -194,6 +188,7 @@ struct ReceiptItem: View {
                     .foregroundStyle(Color.mangataText)
             }
         }
+    }
 }
 
 struct DashedLine: View {
